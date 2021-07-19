@@ -1,0 +1,13 @@
+/* Write your PL/SQL query statement below */
+SELECT Request_at as day,
+ROUND((sum(case when Status in ('cancelled_by_driver','cancelled_by_client') 
+           then 1 else 0 end))/COUNT(ID),2) as "cancellation rate"
+FROM TRIPS T inner join USERS U
+ON (U.USERS_ID = T.client_ID
+AND U.BANNED = 'No')
+INNER JOIN  USERS U1
+ON (U1.USERS_ID = T.Driver_Id
+AND U1.BANNED = 'No')
+and Request_at between '2013-10-01' and '2013-10-03'
+group by Request_at
+order by Request_at
