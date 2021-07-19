@@ -1,0 +1,9 @@
+/* Write your PL/SQL query statement below */
+select w.name as "Department",w.nn as "Employee",w.Salary
+from
+(select e.id,e.name as nn,e.Salary,max(e.Salary) over (partition by e.DepartmentId) as MaxS
+,d.name
+from Employee e
+left join Department d on d.id = e.DepartmentId)w
+where w.Salary = w.MaxS and w.name is not null
+
