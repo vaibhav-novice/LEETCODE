@@ -1,0 +1,2 @@
+# Write your MySQL query statement below
+DELETE FROM `Person` USING `Person`, (SELECT MIN(`Id`) as `id`, `Email` FROM `Person` GROUP BY `Email` HAVING COUNT(`Email`) > 1) as `p` WHERE `Person`.`Id` > `p`.`id` AND `Person`.`Email` = `p`.`Email`
