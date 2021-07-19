@@ -1,0 +1,20 @@
+/* Write your PL/SQL query statement below */
+WITH st AS
+(
+  SELECT id,
+         visit_date,
+         people,
+         id - ROW_NUMBER() OVER (ORDER BY id) diff
+  FROM stadium
+  WHERE people >= 100
+)
+SELECT st.id AS "id",
+       to_char(st.visit_date,'yyyy-mm-dd') "visit_date",
+       st.people "people"
+FROM st
+  JOIN (SELECT diff,
+               COUNT(*) total
+        FROM st
+        GROUP BY diff
+        HAVING COUNT(*) > 2) gap ON st.diff = gap.diff
+ORDER BY st.id
