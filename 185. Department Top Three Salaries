@@ -1,0 +1,9 @@
+/* Write your PL/SQL query statement below */
+select Department, Employee, Salary
+from 
+    (
+    select e.name Employee, e.Salary, e.departmentid, dense_rank() over (partition by e.departmentid order by e.salary desc) salary_rank,d.name Department
+    from employee e
+    join department d on d.id=e.departmentid
+    ) sub
+where salary_rank<=3
